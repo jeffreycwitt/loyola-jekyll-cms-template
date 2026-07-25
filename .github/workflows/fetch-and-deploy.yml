@@ -39,14 +39,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add _posts/ _layouts/ index.html
+          git add _posts/ _layouts/
+          find . -maxdepth 1 -name "*.html" -exec git add {} +
           git diff --cached --quiet || git commit -m "chore: sync posts from CMS [$(date -u +%Y-%m-%dT%H:%M:%SZ)] [skip ci]"
           git push
 
       - name: Apply theme
         run: |
-          cp -r _themes/default/_layouts .
-          cp _themes/default/index.html .
+          cp -r _themes/default/. .
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1

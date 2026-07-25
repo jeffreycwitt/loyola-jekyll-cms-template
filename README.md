@@ -44,9 +44,15 @@ _themes/
       default.html
       post.html
     index.html
+  FA26_FR365/           ← Les Misérables class theme (parchment/crimson, EB Garamond)
+    _layouts/
+      default.html
+      post.html
+    index.html          ← landing page with hardcoded welcome section + post list
+    about.html          ← hardcoded course and book description
 ```
 
-To add a new theme, create a new directory under `_themes/` following the same structure. Site repos select a theme by name in their workflow file.
+To add a new theme, create a new directory under `_themes/` following the same structure. Any `.html` files at the theme root (beyond `index.html`) are automatically copied and snapshotted — add an `about.html` or other static pages freely.
 
 To update a theme, edit files under `_themes/` in this repo and push. All sites using that theme will pick up the changes on their next build.
 

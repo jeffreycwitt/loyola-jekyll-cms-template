@@ -43,8 +43,7 @@ jobs:
         run: |
           cp -r _template/scripts .
           cp _template/Gemfile _template/Gemfile.lock _template/package.json _template/_config.yml .
-          cp -r _template/_themes/${{ inputs.theme }}/_layouts .
-          cp _template/_themes/${{ inputs.theme }}/index.html .
+          cp -r _template/_themes/${{ inputs.theme }}/. .
           rm -rf _template
 
       - name: Setup Node.js
@@ -64,7 +63,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add _posts/ _layouts/ index.html scripts/ Gemfile Gemfile.lock package.json _config.yml
+          git add _posts/ _layouts/ scripts/ Gemfile Gemfile.lock package.json _config.yml
+          find . -maxdepth 1 -name "*.html" -exec git add {} +
           git diff --cached --quiet || git commit -m "chore: sync [$(date -u +%Y-%m-%dT%H:%M:%SZ)] [skip ci]"
           git push
 

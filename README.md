@@ -98,6 +98,7 @@ jobs:
     uses: jeffreycwitt/loyola-jekyll-cms-template/.github/workflows/reusable.yml@main
     with:
       theme: default        # or: academic
+      group: ''             # optional: set to a group name (e.g. FA26_FR365) to filter posts
     secrets:
       CMS_URL:      ${{ secrets.CMS_URL }}
       CMS_EMAIL:    ${{ secrets.CMS_EMAIL }}
@@ -181,6 +182,7 @@ To allow a site repo under a different GitHub organization to call the reusable 
 
 - Reads `CMS_URL`, `CMS_EMAIL`, `CMS_PASSWORD` from environment or `.env` file
 - If credentials are provided, authenticates via `POST /api/users/login` and attaches a JWT to all requests
+- If `CMS_GROUP` is set, filters posts to that group name (`where[group.name][equals]=<value>`); otherwise fetches all accessible posts
 - Fetches all posts with pagination (`/api/posts?page=N&limit=100`)
 - Fetches all users to resolve author names (`/api/users`)
 - Converts Payload's Lexical rich-text JSON to HTML (paragraphs, headings, bold/italic/code, lists, links, images, YouTube video embeds)

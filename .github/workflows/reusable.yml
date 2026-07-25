@@ -6,6 +6,9 @@ on:
       theme:
         type: string
         default: default
+      group:
+        type: string
+        default: ''
     secrets:
       CMS_URL:
         required: true
@@ -55,6 +58,7 @@ jobs:
           CMS_URL:      ${{ secrets.CMS_URL }}
           CMS_EMAIL:    ${{ secrets.CMS_EMAIL }}
           CMS_PASSWORD: ${{ secrets.CMS_PASSWORD }}
+          CMS_GROUP:    ${{ inputs.group }}
 
       - name: Commit snapshot
         run: |

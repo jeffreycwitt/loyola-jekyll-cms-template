@@ -76,10 +76,16 @@ jobs:
 
       - name: Build Jekyll
         run: |
+          REPO="${GITHUB_REPOSITORY##*/}"
           if [ -f _config.site.yml ]; then
-            bundle exec jekyll build --config _config.yml,_config.site.yml
+            CONFIG="_config.yml,_config.site.yml"
           else
-            bundle exec jekyll build
+            CONFIG="_config.yml"
+          fi
+          if grep -q '^baseurl:' _config.site.yml 2>/dev/null; then
+            bundle exec jekyll build --config "$CONFIG"
+          else
+            bundle exec jekyll build --config "$CONFIG" --baseurl "/$REPO"
           fi
 
       - name: Configure GitHub Pages

@@ -1,0 +1,91 @@
+name: Reusable fetch-and-deploy
+
+on:
+  workflow_call:
+    inputs:
+      theme:
+        type: string
+        default: default
+    secrets:
+      CMS_URL:
+        required: true
+      CMS_EMAIL:
+        required: true
+      CMS_PASSWORD:
+        required: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  fetch-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Checkout site repo
+        uses: actions/checkout@v4
+
+      - name: Checkout template repo
+        uses: actions/checkout@v4
+        with:
+          repository: jeffreycwitt/loyola-jekyll-cms-template
+          path: _template
+
+      - name: Apply template files
+        run: |
+          cp -r _template/scripts .
+          cp _template/Gemfile _template/Gemfile.lock _template/package.json _template/_config.yml .
+          cp -r _template/_themes/${{ inputs.theme }}/_layouts .
+          cp _template/_themes/${{ inputs.theme }}/index.html .
+          rm -rf _template
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch posts from CMS
+        run: node scripts/fetch-posts.js
+        env:
+          CMS_URL:      ${{ secrets.CMS_URL }}
+          CMS_EMAIL:    ${{ secrets.CMS_EMAIL }}
+          CMS_PASSWORD: ${{ secrets.CMS_PASSWORD }}
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add _posts/ _layouts/ index.html scripts/ Gemfile Gemfile.lock package.json _config.yml
+          git diff --cached --quiet || git commit -m "chore: sync [$(date -u +%Y-%m-%dT%H:%M:%SZ)] [skip ci]"
+          git push
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Build Jekyll
+        run: |
+          if [ -f _config.site.yml ]; then
+            bundle exec jekyll build --config _config.yml,_config.site.yml
+          else
+            bundle exec jekyll build
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

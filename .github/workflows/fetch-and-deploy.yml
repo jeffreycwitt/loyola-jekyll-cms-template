@@ -1,0 +1,70 @@
+name: Fetch and Deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 * * * *'   # hourly; adjust as needed
+  workflow_dispatch:        # manual trigger from GitHub UI
+
+permissions:
+  contents: write   # commit generated _posts/
+  pages: write
+  id-token: write
+
+jobs:
+  fetch-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch posts from CMS
+        run: node scripts/fetch-posts.js
+        env:
+          CMS_URL:      ${{ secrets.CMS_URL }}
+          CMS_EMAIL:    ${{ secrets.CMS_EMAIL }}
+          CMS_PASSWORD: ${{ secrets.CMS_PASSWORD }}
+
+      - name: Commit post snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add _posts/ _layouts/ index.html
+          git diff --cached --quiet || git commit -m "chore: sync posts from CMS [$(date -u +%Y-%m-%dT%H:%M:%SZ)] [skip ci]"
+          git push
+
+      - name: Apply theme
+        run: |
+          cp -r _themes/default/_layouts .
+          cp _themes/default/index.html .
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Build Jekyll
+        run: bundle exec jekyll build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

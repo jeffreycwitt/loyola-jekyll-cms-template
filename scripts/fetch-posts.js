@@ -155,10 +155,11 @@ async function fetchAllPosts(token) {
   let hasNextPage = true;
 
   while (hasNextPage) {
+    const statusFilter = `&where[_status][equals]=published`;
     const groupFilter = CMS_GROUP
       ? `&where[group.name][equals]=${encodeURIComponent(CMS_GROUP)}`
       : '';
-    const url = `${CMS_URL}/api/posts?page=${page}&limit=100${groupFilter}`;
+    const url = `${CMS_URL}/api/posts?page=${page}&limit=100${statusFilter}${groupFilter}`;
     const res = await fetch(url, { headers: authHeaders(token) });
     if (!res.ok) throw new Error(`Failed to fetch posts (page ${page}): ${res.status} ${res.statusText}`);
     const data = await res.json();

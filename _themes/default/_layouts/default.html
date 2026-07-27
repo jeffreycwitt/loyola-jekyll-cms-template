@@ -360,6 +360,36 @@
       border: none;
     }
 
+    /* ── Tags ── */
+    .post-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tag:hover { color: var(--accent); border-color: var(--accent); }
+    .tag-section { margin-bottom: 2.5rem; }
+    .tag-heading {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+    .post-list-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.3rem; }
+    .tag-chip { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+    .tag-chip + .tag-chip::before { content: '·'; margin-right: 0.3rem; }
+
     /* ── Footer ── */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -390,6 +420,7 @@
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="{{ '/' | relative_url }}">Archive</a>
+      <a href="{{ '/tags/' | relative_url }}">Tags</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Light</button>
     </nav>
   </header>

@@ -299,6 +299,37 @@
     }
     .about-section a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 
+    /* ── Tags ── */
+    .post-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .tag {
+      display: inline-block;
+      font-family: var(--ff-serif);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 1px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tag:hover { color: var(--accent); border-color: var(--accent); }
+    .tag-section { margin-bottom: 2.5rem; }
+    .tag-heading {
+      font-family: var(--ff-serif);
+      font-size: 0.82rem;
+      font-style: italic;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+    .post-list-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.3rem; }
+    .tag-chip { font-family: var(--ff-serif); font-style: italic; font-size: 0.78rem; color: var(--muted); }
+    .tag-chip + .tag-chip::before { content: '·'; margin-right: 0.3rem; }
+
     /* ── Footer ── */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -331,6 +362,7 @@
     <nav class="site-nav" aria-label="Primary">
       <a href="{{ '/' | relative_url }}">Student Writings</a>
       <a href="{{ '/about/' | relative_url }}">About</a>
+      <a href="{{ '/tags/' | relative_url }}">Tags</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Dark</button>
     </nav>
   </header>

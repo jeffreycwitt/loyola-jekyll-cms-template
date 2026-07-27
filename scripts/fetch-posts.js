@@ -185,6 +185,7 @@ function buildPostFile(post, slugMap, userMap) {
   const authorEmail = authorId != null ? (userMap.get(authorId) ?? null) : null;
 
   const title = post.title.replace(/"/g, '\\"');
+  const tags = (post.tags ?? []).map(t => t.tag).filter(Boolean);
   const frontMatter = [
     '---',
     `layout: post`,
@@ -192,6 +193,7 @@ function buildPostFile(post, slugMap, userMap) {
     `date: ${date}`,
     `cms_id: ${post.id}`,
     authorEmail ? `author: "${authorEmail}"` : null,
+    tags.length ? `tags: [${tags.map(t => `"${t.replace(/"/g, '\\"')}"`).join(', ')}]` : null,
     '---',
   ].filter(Boolean).join('\n');
 

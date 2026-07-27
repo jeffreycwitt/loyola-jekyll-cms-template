@@ -148,7 +148,7 @@ with:
   portfolio: all
 ```
 
-The index page shows each portfolio as a section with its posts in order. The `/portfolios/` page provides the same view at a permanent URL. All unique posts across portfolios are written to `_posts/`; duplicate posts (the same post in multiple portfolios) are written once. A `_data/portfolios.yml` file is written with the full ordered list for each portfolio.
+The index page shows all posts date-sorted (same as regular mode); the `/portfolios/` page shows each portfolio as a section with its posts in the curator-defined order. All unique posts across portfolios are written to `_posts/`; duplicate posts (the same post in multiple portfolios) are written once. A `_data/portfolios.yml` file is written with the full ordered list for each portfolio.
 
 ### 6. (Optional) Override site title and description
 

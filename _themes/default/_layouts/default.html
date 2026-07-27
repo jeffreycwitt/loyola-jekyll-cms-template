@@ -360,6 +360,34 @@
       border: none;
     }
 
+    /* ── Portfolios ── */
+    .portfolio-header {
+      padding-bottom: 1.75rem;
+      margin-bottom: 1.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .portfolio-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(1.6rem, 4vw, 2.25rem);
+      font-weight: 400;
+      line-height: 1.2;
+      text-wrap: balance;
+      margin-bottom: 0.5rem;
+    }
+    .portfolio-description { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+    .portfolio-section { margin-bottom: 2.5rem; }
+    .portfolio-section-header {
+      padding-bottom: 0.75rem;
+      margin-bottom: 0;
+      border-bottom: 2px solid var(--text);
+    }
+    .portfolio-section-title {
+      font-family: var(--ff-serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
     /* ── Tags ── */
     .post-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
     .tag {
@@ -421,6 +449,7 @@
     <nav class="site-nav" aria-label="Primary">
       <a href="{{ '/' | relative_url }}">Archive</a>
       <a href="{{ '/tags/' | relative_url }}">Tags</a>
+      <a href="{{ '/portfolios/' | relative_url }}">Portfolios</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Light</button>
     </nav>
   </header>

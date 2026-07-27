@@ -9,6 +9,9 @@ on:
       group:
         type: string
         default: ''
+      portfolio:
+        type: string
+        default: ''
     secrets:
       CMS_URL:
         required: true
@@ -57,13 +60,14 @@ jobs:
           CMS_URL:      ${{ secrets.CMS_URL }}
           CMS_EMAIL:    ${{ secrets.CMS_EMAIL }}
           CMS_PASSWORD: ${{ secrets.CMS_PASSWORD }}
-          CMS_GROUP:    ${{ inputs.group }}
+          CMS_GROUP:     ${{ inputs.group }}
+          CMS_PORTFOLIO: ${{ inputs.portfolio }}
 
       - name: Commit snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add _posts/ _layouts/ scripts/ Gemfile Gemfile.lock package.json _config.yml
+          git add _posts/ _data/ _layouts/ scripts/ Gemfile Gemfile.lock package.json _config.yml
           find . -maxdepth 1 -name "*.html" -exec git add {} +
           git diff --cached --quiet || git commit -m "chore: sync [$(date -u +%Y-%m-%dT%H:%M:%SZ)] [skip ci]"
           git push
